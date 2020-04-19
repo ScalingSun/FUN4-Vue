@@ -1,5 +1,5 @@
 <template>
-    <button @click="$emit('deleteUser')">delete</button>
+    <md-button class="md-raised md-primary" @click="$emit('deleteUser')">delete</md-button>
 </template>
 
 <script>

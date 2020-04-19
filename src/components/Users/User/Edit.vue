@@ -1,17 +1,23 @@
 <template>
-<div>
-    <form class="edit oneLine" @submit="Edit"> 
-        <h3 style="text-align:center">gebruiker wijzigen</h3>
-        Naam:
-        <input type="text" class="textbox" size="10" v-model="Name" id="Name">
-        Wachtwoord:
-        <input type="password"  v-model="Password" class="textbox" size="10" id="password">
-        Emailadres:
-        <input type="email" v-model="EmailAddress" class="textbox" id="Emailaddress">
-        <button class="button" v-on:click="Cancel">Cancel</button>
-        <button class="button">Update</button>
-    </form>
-</div>
+    <md-dialog :md-active.sync="EditDialog">
+         <md-dialog-title><b>Gebruiker wijzigen</b></md-dialog-title>
+            <form class="form" @submit="Edit"> 
+                <md-field>
+                <label>Gebruikersnaam</label>
+                    <md-input v-model="Name" type="text" id="Name"></md-input>
+                </md-field>
+                <md-field>
+                <label>Wachtwoord</label>
+                    <md-input v-model="Password" type="password" id="password"></md-input>
+                </md-field>
+                <md-field>
+                <label>Emailadres</label>
+                    <md-input v-model="EmailAddress" id="EmailAddress"></md-input>
+                </md-field>
+                <md-button class="button md-raised md-primary">Update</md-button>
+                <md-button class="button md-raised md-accent cancel" v-on:click="Cancel">Cancel</md-button>
+            </form>
+    </md-dialog>
 </template>
 
 <script>
@@ -23,7 +29,8 @@ export default {
          return {
             Name: '',
             Password: '',
-            EmailAddress: ''
+            EmailAddress: '',
+            EditDialog: true
         }
     },
     methods:{
@@ -41,6 +48,8 @@ export default {
         Cancel(e){
             e.preventDefault();
             this.$emit('cancel')
+        },
+        created(){
         }
     }
 }
@@ -48,24 +57,15 @@ export default {
 </script>
 
 <style scoped>
-    .edit{
-        text-align:left;
-        background-color:lightgrey;
-        max-height:10%;
-        float:left;
-        margin-bottom:5%;
-        min-width:100%;
-        padding-bottom:2%;
+    .form{
+        padding: 10% 10% 10% 10%;
     }
-    .textbox{
-        max-width:35%;  
-    }
-    .oneLine{
-        display:inline-block;
-    }
-    .button{
+    .cancel{
         float:right;
-        margin-right:1%;
-        min-width:10%;
+    }
+    .md-title{
+        display:flex;
+        align-items:center;
+        justify-content: center;
     }
 </style>

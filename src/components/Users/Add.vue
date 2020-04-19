@@ -1,17 +1,23 @@
 <template>
-    <div>
-        <form class="add oneLine" @submit="Add"> 
-            <h3 style="text-align:center">toevoegen gebruiker</h3>
-            Naam:
-            <input type="text" v-model="Name" class="textbox" size="10" id="Name">
-            Wachtwoord:
-            <input type="password" v-model="Password" class="textbox" size="10" id="password">
-            Emailadres:
-            <input type="email" v-model="Emailaddress" class="textbox" id="Emailaddress">
-            
-            <button class="button">Create</button>
-        </form>
-    </div>
+    <md-dialog :md-active.sync="AddDialog">
+        <md-dialog-title><b>gebruiker toevoegen</b></md-dialog-title>
+            <form class="form" @submit="Add"> 
+                <md-field>
+                <label>Gebruikersnaam</label>
+                    <md-input v-model="Name" type="text" id="Name"></md-input>
+                </md-field>
+                <md-field>
+                <label>Wachtwoord</label>
+                    <md-input v-model="Password" type="Password" id="Password"></md-input>
+                </md-field>
+                <md-field>
+                <label>Emailadres</label>
+                    <md-input v-model="Emailaddress" id="Emailaddress"></md-input>
+                </md-field>
+                <md-button class="button md-raised md-primary">creër</md-button>
+                <md-button class="button md-raised md-accent cancel" v-on:click="Cancel">annuleer</md-button>
+            </form>
+    </md-dialog>
 </template>
 
 <script>
@@ -21,7 +27,8 @@ export default {
         return {
             Name: '',
             Password: '',
-            Emailaddress: ''
+            Emailaddress: '',
+            AddDialog: true,
         }
     },
     methods:{
@@ -35,7 +42,11 @@ export default {
                 Active: 1
             }
             this.$emit('addUser', newUser);
-        }
+        },
+        Cancel(e){
+            e.preventDefault();
+            this.$emit('cancel')
+        },
     }
 }
 

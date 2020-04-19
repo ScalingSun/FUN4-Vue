@@ -1,14 +1,14 @@
 <template>
-    <tr>    
-        <td>{{User.id}}</td>
-        <td>{{User.Name}}</td>
-        <td>{{User.EmailAddress}}</td>
-        <td>{{User.Wealth}}</td>
-        <td>{{User.Active}}</td>
-        <td><button v-on:click="$emit('enableAddCurrencyPerUser',User)">Geld toevoegen</button></td>
-        <td><button v-on:click="$emit('editUser', User)">Edit</button></td>
-        <td><Delete v-bind:User="User" v-on:deleteUser="$emit('deleteUser',User.id)" /></td>
-    </tr>
+    <md-table-row>    
+        <md-table-cell>{{User.id}}</md-table-cell>
+        <md-table-cell>{{User.Name}}</md-table-cell>
+        <md-table-cell>{{User.EmailAddress}}</md-table-cell>
+        <md-table-cell>{{User.Wealth}}</md-table-cell>
+        <md-table-cell>{{User.Active}}</md-table-cell>
+        <md-table-cell><md-button class="md-raised md-primary" v-on:click="$emit('enableAddCurrencyPerUser',User)">Geld toevoegen</md-button></md-table-cell>
+        <md-table-cell><md-button class="md-raised md-primary" v-on:click="$emit('editUser', User)">Edit</md-button></md-table-cell>
+        <md-table-cell><Delete v-bind:User="User" v-on:deleteUser="$emit('deleteUser',User.id)" /></md-table-cell>
+    </md-table-row>
 </template>
 
 <script>
@@ -25,5 +25,5 @@ export default {
 </script>
 
 <style scoped>
-
+    
 </style>
