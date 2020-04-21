@@ -37,10 +37,10 @@ export default {
     },
     methods:{
       forcererender(){
+        console.log('nibbis')
         this.key += 1;
       },
       async GetUserdata(){
-        console.log(this.userId)
         await this.getUserinfo(this.userId);
       },
       async Login(UserLogin){

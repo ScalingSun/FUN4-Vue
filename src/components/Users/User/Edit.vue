@@ -3,18 +3,18 @@
          <md-dialog-title><b>Gebruiker wijzigen</b></md-dialog-title>
             <form class="form" @submit="Edit"> 
                 <md-field>
-                <label>Gebruikersnaam</label>
-                    <md-input v-model="Name" type="text" id="Name"></md-input>
+                <label>Emailadres</label>
+                    <md-input v-model="EmailAddress" id="EmailAddress"></md-input>
                 </md-field>
                 <md-field>
                 <label>Wachtwoord</label>
                     <md-input v-model="Password" type="password" id="password"></md-input>
                 </md-field>
                 <md-field>
-                <label>Emailadres</label>
-                    <md-input v-model="EmailAddress" id="EmailAddress"></md-input>
+                <label>Gebruikersnaam</label>
+                    <md-input v-model="Name" type="text" id="Name"></md-input>
                 </md-field>
-                <md-button class="button md-raised md-primary">Update</md-button>
+                <md-button class="button md-raised md-primary" v-on:click="Edit">Update</md-button>
                 <md-button class="button md-raised md-accent cancel" v-on:click="Cancel">Cancel</md-button>
             </form>
     </md-dialog>
@@ -24,15 +24,26 @@
 
 export default {
     name: "Edit",
-    props:["User"],
+    props:{
+        User: {},
+        EditKey: Boolean,
+    },
     data(){
          return {
             Name: '',
             Password: '',
             EmailAddress: '',
-            EditDialog: true
+            EditDialog: this.EditKey
         }
     },
+    watch: {
+    EditDialog(val) {
+      this.$emit("update:EditKey", val);
+    },
+    EditKey(val) {
+      this.EditDialog = val;
+    },
+  },
     methods:{
         Edit(e){
             e.preventDefault();
