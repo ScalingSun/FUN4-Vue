@@ -1,6 +1,6 @@
 <template>
     <md-dialog :md-active.sync="AddDialog">
-        <md-dialog-title><b>gebruiker toevoegen</b></md-dialog-title>
+        <md-dialog-title><b>Gebruiker toevoegen</b></md-dialog-title>
             <form class="form" @submit="Add"> 
                 <md-field>
                 <label>Gebruikersnaam</label>
@@ -14,8 +14,8 @@
                 <label>Emailadres</label>
                     <md-input v-model="Emailaddress" id="Emailaddress"></md-input>
                 </md-field>
-                <md-button class="button md-raised md-primary">creër</md-button>
                 <md-button class="button md-raised md-accent cancel" v-on:click="Cancel">annuleer</md-button>
+                <md-button class="button md-raised md-primary">creër</md-button>
             </form>
     </md-dialog>
 </template>
@@ -45,7 +45,8 @@ export default {
         },
         Cancel(e){
             e.preventDefault();
-            this.$emit('cancel')
+            console.log('this works');
+            this.$emit('cancel');
         },
     }
 }
@@ -53,24 +54,15 @@ export default {
 </script>
 
 <style scoped>
-.add{
-    text-align:left;
-    background-color:lightgrey;
-    max-height:10%;
-    float:left;
-    margin-bottom:5%;
-    min-width:100%;
-    padding-bottom:2%;
-}
-.textbox{
-    max-width:35%;  
-}
-.oneLine{
-    display:inline-block;
-}
-.button{
-    float:right;
-    margin-right:1%;
-    min-width:10%;
-}
+    .form{
+        padding: 10% 10% 10% 10%;
+    }
+    .cancel{
+        float:right;
+    }
+    .md-title{
+        display:flex;
+        align-items:center;
+        justify-content: center;
+    }
 </style>

@@ -1,6 +1,6 @@
 <template>
     <div class="all">
-        <template v-if="AddKey"><Add v-on:addUser="addUser"/></template>
+        <template v-if="AddKey"><Add v-on:addUser="addUser" v-on:cancel="removeAddUser" /></template>
         <div v-if="Editkey === true" >
             <Edit v-bind:User='Currentuser' v-on:editUser="editUser" v-on:cancel="removeEditUser" />
         </div>
@@ -57,7 +57,9 @@ export default {
         deleteUser(id){
             axios.delete('https://localhost:44306/api/User/'+ id, {
                 headers: {"Authorization" : `Bearer  ${this.token}`}})
-            this.Users = this.Users.filter(user => user.id !== id);
+                if(id !=2){
+                    this.Users = this.Users.filter(user => user.id !== id);
+                }
         },
         enableEditUser(Currentuser){
             this.Currentuser = Currentuser;
@@ -82,6 +84,9 @@ export default {
         },
         removeEditUser(){
             this.Editkey = false;
+        },
+        removeAddUser(){
+            this.AddKey = false;
         },
         removeAddCurrencyUser(){
             this.AddCurrencyKey = false;
@@ -122,6 +127,7 @@ export default {
      async created(){
         const response = await axios.get('https://localhost:44306/api/User', { headers: {"Authorization" : `Bearer ${this.token}`} }).then(resp => {return resp});
         this.Users = response.data;
+
     }
 }
 
