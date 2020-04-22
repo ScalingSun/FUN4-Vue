@@ -1,13 +1,15 @@
 <template>
-  <div>
-    <form class="Add oneLine" @submit="AddCurrency"> 
-        <h3 style="text-align:center">Geld toevoegen</h3>
-        Bedrag:
-        <input type="number"  v-model="Amount" class="textbox" id="Amount">
-        <button class="button" v-on:click="Cancel">Cancel</button>
-        <button class="button">Voeg toe</button>
+  <md-dialog :md-active.sync="AddCurrencyDialog">
+    <md-dialog-title><b>Geld toevoegen</b></md-dialog-title>
+    <form class="form" @submit="AddCurrency">
+      <md-field>
+        <label>Bedrag</label>
+        <md-input v-model="Amount" type="number" step="0.75" min="7.50" max="75" id="Amount"></md-input>
+      </md-field>
+      <md-button class="button md-raised md-primary" v-on:click="AddCurrency">betalen</md-button>
+      <md-button class="button md-raised md-accent cancel" v-on:click="Cancel">annuleer</md-button>
     </form>
-  </div>
+  </md-dialog>
 </template>
 
 <script>
@@ -15,14 +17,29 @@ export default {
 name: 'AddMoney',
 data(){
     return {
-        Amount:Number
+        Amount: 7.5,
+        AddCurrencyDialog: this.AddCurrencyKey,
     }
 },
+props:{
+    AddCurrencyKey: Boolean,
+    User : {}
+},
+  watch: {
+    AddCurrencyDialog(val) {
+      this.$emit("update:AddCurrencyKey", val);
+    },
+    AddCurrencyKey(val) {
+      this.AddCurrencyDialog = val;
+    },
+  },
 methods:{
         AddCurrency(e){
             e.preventDefault();
             const Transaction = {
-                Amount: this.Amount
+                Amount: Number(this.Amount),
+                UserID: this.User.id 
+                
             }
             this.$emit('AddCurrencyUser', Transaction);
         },
@@ -35,25 +52,15 @@ methods:{
 </script>
 
 <style scoped>
-    .Add{
-        text-align:left;
-        background-color:lightgrey;
-        max-height:10%;
-        float:left;
-        margin-bottom:5%;
-        min-width:100%;
-        padding-bottom:2%;
-        text-align: center;
-    }
-    .textbox{
-        max-width:35%;  
-    }
-    .oneLine{
-        display:inline-block;
-    }
-    .button{
-        float:right;
-        margin-right:1%;
-        min-width:10%;
-    }
+.form {
+  padding: 10% 10% 10% 10%;
+}
+.cancel {
+  float: right;
+}
+.md-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 </style>

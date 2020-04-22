@@ -1,148 +1,160 @@
 <template>
-    <div class="all">
-        <template v-if="AddKey"><Add v-on:addUser="addUser" v-on:cancel="removeAddUser" /></template>
-        <div v-if="Editkey === true" >
-            <Edit v-bind:User='Currentuser' v-on:editUser="editUser" v-on:cancel="removeEditUser" />
-        </div>
-        <div v-if="AddCurrencyKey === true" >
-            <AddMoney v-bind:User='Currentuser' v-on:AddCurrencyUser="AddCurrency" v-on:cancel="removeAddCurrencyUser" />
-        </div>
-        <md-table class="table">
-            <md-table-row>
-                <md-table-head>Id</md-table-head>
-                <md-table-head>Name</md-table-head>
-                <md-table-head>Emailadres</md-table-head>
-                <md-table-head>Wealth</md-table-head>
-                <md-table-head>Active</md-table-head>
-                <md-table-head>Add</md-table-head>
-                <md-table-head>Edit</md-table-head>
-                <md-table-head>Delete</md-table-head>
-            </md-table-row>
-        <template v-for="user in Users">
-            <User v-bind:key='user.Id' v-bind:User="user" v-on:deleteUser="deleteUser" v-on:editUser="enableEditUser" v-on:enableAddCurrencyPerUser="enableAddCurrencyPerUser" />
-        </template>
-        </md-table>
-        <md-button class="md-fab md-primary addbutton" v-on:click="AddPrompt">
-            <md-icon>+</md-icon>
-      </md-button>
-    </div>
+  <div class="all">
+    <Add v-on:addUser="addUser" v-on:cancel="removeAddUser" v-bind:AddKey.sync="AddKey" />
+    <Edit v-bind:User="Currentuser" v-on:editUser="editUser" v-on:cancel="removeEditUser" v-bind:EditKey.sync="EditKey" />
+      <AddMoney v-bind:User="Currentuser" v-on:AddCurrencyUser="AddCurrency" v-bind:AddCurrencyKey.sync="AddCurrencyKey" v-on:cancel="removeAddCurrencyUser" />
+    <md-table v-model="Users" md-card>
+      <md-table-toolbar>
+        <h1 class="md-title">Users</h1>
+      </md-table-toolbar>
+      <md-table-row slot="md-table-row" slot-scope="{ item }">
+        <md-table-cell md-label="Naam" md-sort-by="name">{{ item.Name }}</md-table-cell>
+        <md-table-cell md-label="Email" md-sort-by="email">{{ item.EmailAddress }}</md-table-cell>
+        <md-table-cell md-label="geld over">{{ item.Wealth }}</md-table-cell>
+        <md-table-cell md-label="Geld toevoegen" md-sort-by="title"><md-button class="md-raised md-primary" v-on:click="enableAddCurrencyPerUser(item)">Geld toevoegen</md-button></md-table-cell>
+        <md-table-cell md-label="wijzigen"><md-button class="md-raised md-primary" v-on:click="enableEditUser(item)">Edit</md-button></md-table-cell>
+        <md-table-cell md-label="verwijderen"><md-button class="md-raised md-primary" v-on:click="deleteUser(item.id)">Delete</md-button></md-table-cell>
+      </md-table-row>
+    </md-table>
+    <md-button class="md-fab md-primary addbutton" v-on:click="AddPrompt">
+      <md-icon>+</md-icon>
+    </md-button>
+  </div>
 </template>
 
 <script>
 import Add from "./Add";
-import Edit from './User/Edit';
-import User from "./User/User";
-import axios from 'axios';
-import AddMoney from './User/AddMoney';
-import { mapGetters, mapActions,mapState } from 'vuex';
+import Edit from "./User/Edit";
+import axios from "axios";
+import AddMoney from "./User/AddMoney";
+import { mapGetters, mapActions, mapState } from "vuex";
 export default {
-    name:'Users',
-    components:{
+  name: "Users",
+  components: {
     Add,
-    User,
     Edit,
     AddMoney
-
+  },
+  data() {
+    return {
+      Users: [],
+      Currentuser: {},
+      EditKey: false,
+      EditDialog: false,
+      AddCurrencyKey: false,
+      AddKey: false,
+      AddDialog: false
+    };
+  },
+  methods: {
+    deleteUser(id) {
+      axios.delete("https://localhost:44306/api/User/" + id, {
+        headers: { Authorization: `Bearer  ${this.token}` }
+      });
+      this.Users = this.Users.filter(user => user.id !== id);
     },
-    data(){
-       return {
-           Users:[],
-           Currentuser:[],
-           Editkey:false,
-           AddCurrencyKey: false,
-           AddKey: false
-       }
+    enableEditUser(Currentuser) {
+      this.Currentuser = Currentuser;
+      this.EditKey = true;
     },
-    methods:{
-        deleteUser(id){
-            axios.delete('https://localhost:44306/api/User/'+ id, {
-                headers: {"Authorization" : `Bearer  ${this.token}`}})
-                if(id !=2){
-                    this.Users = this.Users.filter(user => user.id !== id);
-                }
-        },
-        enableEditUser(Currentuser){
-            this.Currentuser = Currentuser;
-            this.Editkey = true;
-        },
-        enableAddCurrencyPerUser(Currentuser){
-            console.log('this gets called')
-            this.Currentuser = Currentuser;
-            this.AddCurrencyKey = true;
-        },
-        editUser(updatedUser){
-            axios.put('https://localhost:44306/api/User',
-            {
-                id:updatedUser.id,
-                Name: updatedUser.Name,
-                Password: updatedUser.Password,
-                EmailAddress:updatedUser.EmailAddress,
-                Active:updatedUser.Active
-            },
-            { headers: {"Authorization" : `Bearer ${this.token}`}}).then()
-            this.$emit('rerender');
-        },
-        removeEditUser(){
-            this.Editkey = false;
-        },
-        removeAddUser(){
-            this.AddKey = false;
-        },
-        removeAddCurrencyUser(){
-            this.AddCurrencyKey = false;
-        },
-        AddPrompt(){
-            this.AddKey = true;
-        },
-        addUser(newUser){
-            axios.post('https://localhost:44306/api/User', 
-            {
-                Username: newUser.Name,
-                Password: newUser.Password,
-                EmailAddress:newUser.Emailaddress
-            },
-            { headers: {"Authorization" : `Bearer ${this.token}`}}).then()
-            this.$emit('rerender');
-        },
-        AddCurrency(Transaction){
-            axios.post('https://localhost:44306/api/Transaction',
-            {
-                Amount: Transaction.Amount,
-                UserID: Transaction.Id,
-                SubmittedUserID: "test"
-            },
-            { headers: {"Authorization" : `Bearer ${this.token}`}}).then()
-            this.$emit('rerender');
-        },
-        ...mapActions(['RequestToken'])
+    enableAddCurrencyPerUser(Currentuser) {
+      this.Currentuser = Currentuser;
+      this.AddCurrencyKey = true;
     },
-    computed:{
-        ...mapGetters([
+    editUser(updatedUser) {
+      axios
+        .put(
+          "https://localhost:44306/api/User",
+          {
+            id: updatedUser.id,
+            Name: updatedUser.Name,
+            Password: updatedUser.Password,
+            EmailAddress: updatedUser.EmailAddress,
+            Active: updatedUser.Active
+          },
+          { headers: { Authorization: `Bearer ${this.token}` } }
+        )
+        .then();
+        console.log('im stupid')
+        this.EditKey = false; // used to close dialog.
+        this.$emit("rerender");
+    },
+    removeEditUser() {
+      this.EditKey = false;
+    },
+    removeAddUser() {
+      this.AddKey = false;
+    },
+    removeAddCurrencyUser() {
+      this.AddCurrencyKey = false;
+    },
+    AddPrompt() {
+      this.AddKey = true;
+    },
+    addUser(newUser) {
+      axios
+        .post(
+          "https://localhost:44306/api/User",
+          {
+            Username: newUser.Name,
+            Password: newUser.Password,
+            EmailAddress: newUser.Emailaddress
+          },
+          { headers: { Authorization: `Bearer ${this.token}` } }
+        ).then();
+      this.$emit("rerender");
+    },
+    AddCurrency(Transaction) {
+        console.log(Transaction)
+      axios
+        .post(
+          "https://localhost:44306/api/Transaction",
+          {
+            Amount: Transaction.Amount,
+            UserID: Transaction.UserID,
+            SubmittedUserID: this.loginuser.UserId
+          },
+          { headers: { Authorization: `Bearer ${this.token}` } }
+        )
+        .then();
+      this.$emit("rerender");
+    },
+    ...mapActions(["RequestToken"])
+  },
+  computed: {
+    ...mapGetters([
+            'loginuser',
             'token'
         ]),
-        ...mapState({
-            token: state => state.token.token
-        })
-    },
-     async created(){
-        const response = await axios.get('https://localhost:44306/api/User', { headers: {"Authorization" : `Bearer ${this.token}`} }).then(resp => {return resp});
-        this.Users = response.data;
-
-    }
-}
-
+    ...mapState({
+      token: state => state.token.token,
+      loginuser: state => state.loginuser
+    })
+  },
+  async created() {
+    const response = await axios
+      .get("https://localhost:44306/api/User", {
+        headers: { Authorization: `Bearer ${this.token}` }
+      })
+      .then(resp => {
+        return resp;
+      });
+    this.Users = response.data;
+    console.log(this.Users)
+  }
+};
 </script>
 
 <style scoped>
-.table{
-    min-width:100%;
+.table {
+  min-width: 100%;
 }
-.defaultDisabled{
-    display:none;
+.defaultDisabled {
+  display: none;
 }
-.addbutton{
-    float:right;
-    margin-right:2.5%;
-    margin-top:1%;
+.addbutton {
+  float: right;
+  margin-right: 2.5%;
+  margin-top: 1%;
 }
 </style>
