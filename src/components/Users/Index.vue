@@ -25,8 +25,9 @@
 <script>
 import Add from "./Add";
 import Edit from "./User/Edit";
-import axios from "axios";
 import AddMoney from "./User/AddMoney";
+import UserService from '../../services/UserService.js'
+import TransactionService from '../../services/TransactionService.js'
 import { mapGetters, mapActions, mapState } from "vuex";
 export default {
   name: "Users",
@@ -47,12 +48,6 @@ export default {
     };
   },
   methods: {
-    deleteUser(id) {
-      axios.delete("https://localhost:44306/api/User/" + id, {
-        headers: { Authorization: `Bearer  ${this.token}` }
-      });
-      this.Users = this.Users.filter(user => user.id !== id);
-    },
     enableEditUser(Currentuser) {
       this.Currentuser = Currentuser;
       this.EditKey = true;
@@ -60,24 +55,6 @@ export default {
     enableAddCurrencyPerUser(Currentuser) {
       this.Currentuser = Currentuser;
       this.AddCurrencyKey = true;
-    },
-    editUser(updatedUser) {
-      axios
-        .put(
-          "https://localhost:44306/api/User",
-          {
-            id: updatedUser.id,
-            Name: updatedUser.Name,
-            Password: updatedUser.Password,
-            EmailAddress: updatedUser.EmailAddress,
-            Active: updatedUser.Active
-          },
-          { headers: { Authorization: `Bearer ${this.token}` } }
-        )
-        .then();
-        console.log('im stupid')
-        this.EditKey = false; // used to close dialog.
-        this.$emit("rerender");
     },
     removeEditUser() {
       this.EditKey = false;
@@ -91,33 +68,17 @@ export default {
     AddPrompt() {
       this.AddKey = true;
     },
-    addUser(newUser) {
-      axios
-        .post(
-          "https://localhost:44306/api/User",
-          {
-            Username: newUser.Name,
-            Password: newUser.Password,
-            EmailAddress: newUser.Emailaddress
-          },
-          { headers: { Authorization: `Bearer ${this.token}` } }
-        ).then();
-      this.$emit("rerender");
+    EditUser(UpdatedUser){
+      this.UserService.EditUser(UpdatedUser);
     },
-    AddCurrency(Transaction) {
-        console.log(Transaction)
-      axios
-        .post(
-          "https://localhost:44306/api/Transaction",
-          {
-            Amount: Transaction.Amount,
-            UserID: Transaction.UserID,
-            SubmittedUserID: this.loginuser.UserId
-          },
-          { headers: { Authorization: `Bearer ${this.token}` } }
-        )
-        .then();
-      this.$emit("rerender");
+    AddUser(NewUser){
+      this.UserService.EditUser(NewUser);
+    },
+    DeleteUser(UserID){
+      UserService.DeleteUser(UserID);
+    },
+    AddCurrency(Transaction){
+      TransactionService.AddCurrency(Transaction)
     },
     ...mapActions(["RequestToken"])
   },
@@ -131,16 +92,8 @@ export default {
       loginuser: state => state.loginuser
     })
   },
-  async created() {
-    const response = await axios
-      .get("https://localhost:44306/api/User", {
-        headers: { Authorization: `Bearer ${this.token}` }
-      })
-      .then(resp => {
-        return resp;
-      });
-    this.Users = response.data;
-    console.log(this.Users)
+  created() {
+    this.Users = UserService.GetAllUsers();
   }
 };
 </script>

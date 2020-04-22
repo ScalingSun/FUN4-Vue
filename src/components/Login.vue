@@ -1,29 +1,56 @@
 <template>
+  <div class="all">
     <div>
-        <form class="Login" @submit="Login"> 
-            <h3 style="text-align:center">Inloggen</h3>
-            Emailadres:
-            <input type="email" v-model="Emailaddress" class="textbox" id="Emailaddress">
-            Wachtwoord:
-            <input type="password" v-model="Password" class="textbox" size="10" id="password">
-            
-            <button class="button">Login</button>
-        </form>
-        <template v-if="LoginState">
-            <p class="WarningText">Wrong login credentials or the server might be down.</p>
-        </template>
-        <template v-else>
-        </template>
-    </div>
-</template>
+    <form novalidate class="md-layout" @submit.prevent="validateUser">
+      <md-card class="md-layout-item md-size-50 md-small-size-100">
+        <md-card-header>
+          <div class="md-title">Login</div>
+        </md-card-header>
+            <md-card-content>
 
+
+          <md-field>
+            <label for="email">Email</label>
+            <md-input type="email" name="email" id="email" autocomplete="email" v-model="form.Emailaddress" />
+            <span class="md-error">een email is verplicht</span>
+            <span class="md-error">Invalid email</span>
+          </md-field>
+        
+
+        
+          <div class="md-layout md-gutter">
+            <div class="md-layout-item md-small-size-100">
+              <md-field>
+                <label for="Password">Wachtwoord</label>
+                <md-input name="Password" type="Password" id="Password"  v-model="form.Password" />
+                <span class="md-error">je moet een wachtwoord invullen</span>
+              </md-field>
+            </div>
+        </div>
+        <p>Heb je nog geen account, klik dan hieronder.</p>
+        </md-card-content>
+        <md-progress-bar md-mode="indeterminate" v-if="submitting" />
+
+        <md-card-actions>
+        <md-button v-on:click="Add">nieuw toevoegen</md-button>
+          <md-button type="submit" class="md-primary" v-on:click="Login">Login</md-button>
+        </md-card-actions>
+      </md-card>
+    </form>
+    </div>
+  </div>
+</template>
 <script>
 export default {
     name:'Login',
     data(){
         return {
-            Emailaddress: '',
-            Password: '',
+            form:{
+             Emailaddress: '',
+             Password: '',
+            },
+            submitting: false
+
         }
     },
     props:{
@@ -35,20 +62,24 @@ export default {
     methods:{
         Login(e){
             e.preventDefault();
+            this.submitting = true;
             const LoginUser = {
-                Emailaddress: this.Emailaddress,
-                Password: this.Password,
+                Emailaddress: this.form.Emailaddress,
+                Password: this.form.Password,
             }
             this.$emit('login', LoginUser);
+        },
+        Add(){
+            console.log('a href click works too')
         }
     }
 }
 </script>
 
 <style>
-.WarningText{
-    color:red;
-    
+.all{
+    margin-left:33.3%;
+    margin-top:15%;
 }
 
 </style>
