@@ -83,6 +83,7 @@ export default {
 
 <style scoped>
 .all{
+  
     margin-left:33.3%;
     margin-top:15%;
 }
