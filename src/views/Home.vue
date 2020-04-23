@@ -16,7 +16,6 @@ import Users from '../components/Users/Index';
 import Login from '../components/Login';
 import LoggedInUser from '../components/LoggedInUser';
 import Transaction from '../components/Transaction';
-import TokenService from '../services/TokenService.js'
 import { mapGetters, mapActions,mapState } from 'vuex';
 export default {
   name: 'Home',
@@ -45,9 +44,10 @@ export default {
         await this.getUserinfo(this.userId);
       },
       async Login(UserLogin){
-         await this.Req(UserLogin)
-         TokenService.Login(UserLogin);
-          if(this.token){
+        await UserLogin.then(res => console.log(res.data)) 
+        var thingy = JSON.parse(localStorage.getItem('user'));
+        var token = thingy.token;
+          if(token){
             this.LoggedIn = true;
             this.GetUserdata();
           }

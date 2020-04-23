@@ -1,5 +1,4 @@
-import axios from 'axios';
-
+import TokenService from "@/services/TokenService"
 const state = {
     token: '',
     userId: Number
@@ -11,17 +10,8 @@ const getters = {
 
 const actions = {
    async RequestToken(state, loginUser){
-                await axios.post('https://localhost:44306/api/login',{
-                Password: loginUser.Password, // SuperHeavyPassword
-                emailaddress: loginUser.Emailaddress// Admin@Admin.com
-        })
-        .then(function (response) {
-            state.commit('setToken', response.data)
-          })
-          
-          .catch(function () {
-                return null;
-          })
+       const result = await TokenService.RequestToken(loginUser);
+            state.commit('setToken', result.data);
         }
 }
 

@@ -1,5 +1,5 @@
 import axios from 'axios'
-const API_URL = 'http://localhost:51086/api/transaction'
+const API_URL = 'https://localhost:44306/api/transaction'
 
 class TransactionService {
   AddCurrency(Transaction) {

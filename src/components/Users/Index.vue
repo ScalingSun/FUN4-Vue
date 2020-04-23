@@ -68,10 +68,10 @@ export default {
     AddPrompt() {
       this.AddKey = true;
     },
-    EditUser(UpdatedUser){
+    editUser(UpdatedUser){
       this.UserService.EditUser(UpdatedUser);
     },
-    AddUser(NewUser){
+    addUser(NewUser){
       this.UserService.EditUser(NewUser);
     },
     DeleteUser(UserID){
@@ -92,8 +92,8 @@ export default {
       loginuser: state => state.loginuser
     })
   },
-  created() {
-    this.Users = UserService.GetAllUsers();
+  async created() {
+    this.Users = await UserService.GetAllUsers();
   }
 };
 </script>

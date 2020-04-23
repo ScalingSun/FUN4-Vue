@@ -41,6 +41,8 @@
   </div>
 </template>
 <script>
+
+import TokenService from "@/services/TokenService"
 export default {
     name:'Login',
     data(){
@@ -67,7 +69,10 @@ export default {
                 Emailaddress: this.form.Emailaddress,
                 Password: this.form.Password,
             }
-            this.$emit('login', LoginUser);
+           var userdata =  TokenService.login(LoginUser);
+           //hier zit async data (userdata is async)
+
+           this.$emit('login', userdata)
         },
         Add(){
             console.log('a href click works too')
@@ -76,7 +81,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .all{
     margin-left:33.3%;
     margin-top:15%;

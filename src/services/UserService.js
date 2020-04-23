@@ -1,5 +1,5 @@
 import axios from 'axios'
-const apiClient = 'http://localhost:51086/api/User'
+const apiClient = 'https://localhost:44306/api/User'
 
 class UserService {
   editUser(updatedUser) {

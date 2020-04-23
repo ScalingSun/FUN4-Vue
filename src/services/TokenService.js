@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const API_URL = 'http://localhost:51086/api/'
+const API_URL = 'https://localhost:44306/api/'
 
 class TokenService {
   login(user) {
@@ -12,11 +12,26 @@ class TokenService {
       .then(response => {
         if (response.data.token) {
           localStorage.setItem('user', JSON.stringify(response.data))
-          console.log(JSON.parse(localStorage.getItem('user')))
+        
         }
         return response.data
+      }).catch(error => {
+        console.log(error)
       })
-  }
+  } 
+    async RequestToken(state, loginUser){
+    await axios.post('https://localhost:44306/api/login',{
+    Password: loginUser.Password, // SuperHeavyPassword
+    emailaddress: loginUser.Emailaddress// Admin@Admin.com
+})
+.then(function (response) {
+state.commit('setToken', response.data)
+})
+
+.catch(function () {
+    return null;
+})
+}
 
   logout() {
     localStorage.removeItem('user')
