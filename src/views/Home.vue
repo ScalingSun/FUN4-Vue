@@ -44,10 +44,8 @@ export default {
         await this.getUserinfo(this.userId);
       },
       async Login(UserLogin){
-        await UserLogin.then(res => console.log(res.data)) 
-        var thingy = JSON.parse(localStorage.getItem('user'));
-        var token = thingy.token;
-          if(token){
+         await this.Req(UserLogin)
+          if(this.token){
             this.LoggedIn = true;
             this.GetUserdata();
           }
