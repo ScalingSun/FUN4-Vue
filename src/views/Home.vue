@@ -37,7 +37,6 @@ export default {
     },
     methods:{
       forcererender(){
-        console.log('nibbis')
         this.key += 1;
       },
       async GetUserdata(){

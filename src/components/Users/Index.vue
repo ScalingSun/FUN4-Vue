@@ -62,6 +62,7 @@ export default {
       this.AddCurrencyKey = true;
     },
     editUser(updatedUser) {
+      let obj = this; // I hate this.
       axios
         .put(
           "https://localhost:44306/api/User",
@@ -73,11 +74,9 @@ export default {
             Active: updatedUser.Active
           },
           { headers: { Authorization: `Bearer ${this.token}` } }
-        )
-        .then();
-        console.log('im stupid')
-        this.EditKey = false; // used to close dialog.
-        this.$emit("rerender");
+        ).then(function(){ 
+        obj.$emit("rerender");
+        })
     },
     removeEditUser() {
       this.EditKey = false;
@@ -92,6 +91,7 @@ export default {
       this.AddKey = true;
     },
     addUser(newUser) {
+      let obj = this; // I hate this.
       axios
         .post(
           "https://localhost:44306/api/User",
@@ -101,11 +101,12 @@ export default {
             EmailAddress: newUser.Emailaddress
           },
           { headers: { Authorization: `Bearer ${this.token}` } }
-        ).then();
-      this.$emit("rerender");
+        ).then(function(){
+        obj.$emit("rerender");
+        })
     },
     AddCurrency(Transaction) {
-        console.log(Transaction)
+      let obj = this;
       axios
         .post(
           "https://localhost:44306/api/Transaction",
@@ -115,9 +116,10 @@ export default {
             SubmittedUserID: this.loginuser.UserId
           },
           { headers: { Authorization: `Bearer ${this.token}` } }
-        )
-        .then();
-      this.$emit("rerender");
+        ).then(function(){
+          console.log('hits')
+        obj.$emit("rerender");
+        })
     },
     ...mapActions(["RequestToken"])
   },
