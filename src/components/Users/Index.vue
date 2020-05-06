@@ -2,12 +2,15 @@
   <div class="all">
     <Add v-on:addUser="addUser" v-on:cancel="removeAddUser" v-bind:AddKey.sync="AddKey" />
     <Edit v-bind:User="Currentuser" v-on:editUser="editUser" v-on:cancel="removeEditUser" v-bind:EditKey.sync="EditKey" />
-      <AddMoney v-bind:User="Currentuser" v-on:AddCurrencyUser="AddCurrency" v-bind:AddCurrencyKey.sync="AddCurrencyKey" v-on:cancel="removeAddCurrencyUser" />
-    <md-table v-model="Users" md-card>
+    <AddMoney v-bind:User="Currentuser" v-on:AddCurrencyUser="AddCurrency" v-bind:AddCurrencyKey.sync="AddCurrencyKey" v-on:cancel="removeAddCurrencyUser" />
+    <md-table v-model="Users" md-card @md-selected="OnSelect">
+
       <md-table-toolbar>
-        <h1 class="md-title">Users</h1>
-      </md-table-toolbar>
-      <md-table-row slot="md-table-row" slot-scope="{ item }">
+        <md-button class="button md-raised md-accent cancel" id='toggle' v-on:click='AddStamps' disabled>Stempel</md-button>
+        
+          <Transaction v-on:stamp="stampAll" v-on:cancel="removeStamp" v-bind:selectedUsers="Selected" v-bind:StampKey.sync="StampKey" />
+        </md-table-toolbar>
+        <md-table-row slot="md-table-row" slot-scope="{ item }" md-selectable="multiple" md-auto-select>
         <md-table-cell md-label="Naam" md-sort-by="name">{{ item.Name }}</md-table-cell>
         <md-table-cell md-label="Email" md-sort-by="email">{{ item.EmailAddress }}</md-table-cell>
         <md-table-cell md-label="geld over">{{ item.Wealth }}</md-table-cell>
@@ -27,23 +30,28 @@ import Add from "./Add";
 import Edit from "./User/Edit";
 import axios from "axios";
 import AddMoney from "./User/AddMoney";
+import Transaction from '../Transaction'
 import { mapGetters, mapActions, mapState } from "vuex";
 export default {
   name: "Users",
   components: {
     Add,
     Edit,
-    AddMoney
+    AddMoney,
+    Transaction
   },
   data() {
     return {
       Users: [],
+      Selected: [],
       Currentuser: {},
       EditKey: false,
       EditDialog: false,
       AddCurrencyKey: false,
       AddKey: false,
-      AddDialog: false
+      AddDialog: false,
+      StampKey: false,
+      StampDialog: false
     };
   },
   methods: {
@@ -87,8 +95,14 @@ export default {
     removeAddCurrencyUser() {
       this.AddCurrencyKey = false;
     },
+    removeStamp() {
+      this.StampKey = false;
+    },
     AddPrompt() {
       this.AddKey = true;
+    },
+    AddStamps(){
+      this.StampKey = true;
     },
     addUser(newUser) {
       let obj = this; // I hate this.
@@ -121,8 +135,22 @@ export default {
         obj.$emit("rerender");
         })
     },
+  OnSelect(items){
+      this.Selected = items;
+      if(items[0] == null){
+        document.getElementById('toggle').disabled = true;
+      }
+      else{
+        document.getElementById('toggle').disabled = false;
+      }
+    },
+    stampAll(stamping){
+
+    console.log(stamping)
+  },
     ...mapActions(["RequestToken"])
   },
+  
   computed: {
     ...mapGetters([
             'loginuser',

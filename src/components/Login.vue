@@ -1,13 +1,20 @@
 <template>
     <div>
         <form class="Login" @submit="Login"> 
+            <div  style="width:35%; padding:1px 10px 1px 10px; border: 1px solid grey;">
             <h3 style="text-align:center">Inloggen</h3>
-            Emailadres:
-            <input type="email" v-model="Emailaddress" class="textbox" id="Emailaddress">
-            Wachtwoord:
-            <input type="password" v-model="Password" class="textbox" size="10" id="password">
-            
-            <button class="button">Login</button>
+
+            <md-field>
+            <label>Emailadres:</label>
+                <md-input v-model="Emailaddress"></md-input>
+            </md-field><br/>
+
+            <md-field>
+            <label> Wachtwoord:</label>
+                <md-input v-model="Password" type="password"></md-input>
+            </md-field>            
+            <md-button class="button md-raised md-primary" v-on:click="Login">Login</md-button>
+            </div>
         </form>
         <template v-if="LoginState">
             <p class="WarningText">Wrong login credentials or the server might be down.</p>
@@ -48,6 +55,14 @@ export default {
 <style>
 .WarningText{
     color:red;
+}
+.Login{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction: column;
+    margin-top:15%;
+    text-align:center;
     
 }
 

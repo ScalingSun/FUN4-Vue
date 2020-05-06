@@ -1,6 +1,6 @@
 <template>
   <div>
-      <h3>Welkom, {{this.loginuser.Username}}</h3>
+      <h2 class="username">Welkom, {{this.loginuser.Username}}</h2>
   </div>
 </template>
 
@@ -28,6 +28,8 @@ computed:{
 }
 </script>
 
-<style>
-
+<style scoped>
+.username{
+    text-align:center;
+}
 </style>

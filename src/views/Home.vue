@@ -2,7 +2,6 @@
   <div id="app">
     <template v-if="LoggedIn">
       <LoggedInUser />
-      <Transaction />
       <Users v-bind:Users="Users" :key="key" v-on:rerender="forcererender"/>
     </template>
     <template v-else>
@@ -15,15 +14,13 @@
 import Users from '../components/Users/Index';
 import Login from '../components/Login';
 import LoggedInUser from '../components/LoggedInUser';
-import Transaction from '../components/Transaction';
 import { mapGetters, mapActions,mapState } from 'vuex';
 export default {
   name: 'Home',
   components: {
     Users,
     Login,
-    LoggedInUser,
-    Transaction
+    LoggedInUser
   },
   props:{
     Users: []
