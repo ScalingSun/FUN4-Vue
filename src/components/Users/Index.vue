@@ -3,12 +3,10 @@
     <Add v-on:addUser="addUser" v-on:cancel="removeAddUser" v-bind:AddKey.sync="AddKey" />
     <Edit v-bind:User="Currentuser" v-on:editUser="editUser" v-on:cancel="removeEditUser" v-bind:EditKey.sync="EditKey" />
     <AddMoney v-bind:User="Currentuser" v-on:AddCurrencyUser="AddCurrency" v-bind:AddCurrencyKey.sync="AddCurrencyKey" v-on:cancel="removeAddCurrencyUser" />
+    <Transaction v-on:stamp="stampAll" v-on:cancel="removeStamp" v-bind:selectedUsers="Selected" v-bind:StampKey.sync="StampKey" />
     <md-table v-model="Users" md-card @md-selected="OnSelect">
-
       <md-table-toolbar>
         <md-button class="button md-raised md-accent cancel" id='toggle' v-on:click='AddStamps' disabled>Stempel</md-button>
-        
-          <Transaction v-on:stamp="stampAll" v-on:cancel="removeStamp" v-bind:selectedUsers="Selected" v-bind:StampKey.sync="StampKey" />
         </md-table-toolbar>
         <md-table-row slot="md-table-row" slot-scope="{ item }" md-selectable="multiple" md-auto-select>
         <md-table-cell md-label="Naam" md-sort-by="name">{{ item.Name }}</md-table-cell>
