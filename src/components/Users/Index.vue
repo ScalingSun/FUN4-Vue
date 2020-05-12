@@ -99,7 +99,7 @@ export default {
     AddPrompt() {
       this.AddKey = true;
     },
-    AddStamps(){
+    AddStamps(){  
       this.StampKey = true;
     },
     addUser(newUser) {
@@ -168,7 +168,6 @@ export default {
         return resp;
       });
     this.Users = response.data;
-    console.log(this.Users)
   }
 };
 </script>

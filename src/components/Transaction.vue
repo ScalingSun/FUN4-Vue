@@ -2,10 +2,10 @@
     <md-dialog :md-active.sync="TransactionDialog">
       <md-dialog-title><b>Stempelen</b></md-dialog-title>
       <form class="form" @submit="Stamp">
-        <md-field v-for="user in selectedUsers" :key='user.Id'>
+        <md-field v-for="user in selectedUsers" :key='user.id'>
           <label>{{user.Name}}</label>
-          <input type="hidden" v-model="obj.userId" value="user.Id"> 
-          <md-input v-model="obj.Amount" value="0"></md-input>
+          <input type="hidden" v-model="test[user.id].userId" value="user.Id"> 
+          <md-input type='number' v-model="test[user.id].amount"   value="0"></md-input>
       </md-field>
       <md-button class="button md-raised md-primary" v-on:click="Stamp">stempel</md-button>
       <md-button class="button md-raised md-accent cancel" v-on:click="Cancel">annuleer</md-button>
@@ -23,9 +23,10 @@ props:{
 },
 data(){
   return{
-    obj: Object,
-    userId: Number,
-    Amount: Number,
+    test: [{
+      userId: 0,
+      amount: 0
+    }],
     TransactionDialog : this.StampKey
   }
 },
@@ -39,7 +40,8 @@ watch:{
 },
 methods:{
   Stamp(){
-    console.log(this.obj)
+    console.log(this.test)
+
     //this.$emit('Stamp', AllStamps);
   },
   Cancel(){
