@@ -10,11 +10,10 @@
 <script>
 
 import Footer from './components/layout/footer';
-
 export default{
   name:"App",
   components:{
-    Footer
+    Footer,
   },
   data(){
     return {

@@ -1,15 +1,15 @@
 <template>
     <md-dialog :md-active.sync="TransactionDialog">
       <md-dialog-title><b>Stempelen</b></md-dialog-title>
-      <form class="form" @submit="Stamp">
-        <md-field v-for="user in selectedUsers" :key='user.id'>
+      <form class="form">
+        <md-field  v-for="(user,index) in selectedUsers" :key='user.id'>
           <label>{{user.Name}}</label>
-          <input type="hidden" v-model="test[user.id].userId" value="user.Id"> 
-          <md-input type='number' v-model="test[user.id].amount"   value="0"></md-input>
+          <md-input type="number" v-model="dataUser[index].Amount" value="0"></md-input>
+          <md-input type="hidden" v-model="dataUser[index].id" /> 
       </md-field>
+    </form>
       <md-button class="button md-raised md-primary" v-on:click="Stamp">stempel</md-button>
       <md-button class="button md-raised md-accent cancel" v-on:click="Cancel">annuleer</md-button>
-    </form>
   </md-dialog>
 </template>
 
@@ -18,16 +18,14 @@ export default {
 name:'transaction',
 props:{
   'selectedUsers' : Array,
-  StampKey : Boolean
+  StampKey : Boolean,
+  ArraySize: Number,
 
 },
 data(){
   return{
-    test: [{
-      userId: 0,
-      amount: 0
-    }],
-    TransactionDialog : this.StampKey
+    TransactionDialog : this.StampKey,
+    dataUser: []
   }
 },
 watch:{
@@ -36,21 +34,24 @@ watch:{
   },
   StampKey(val){
     this.TransactionDialog = val;
-  }
+  },
 },
 methods:{
   Stamp(){
-    console.log(this.test)
-
-    //this.$emit('Stamp', AllStamps);
+    console.log(this.dataUser)
+    this.$emit("Stamp",this.dataUser)
   },
   Cancel(){
     this.$emit("cancel");
   },
 },
-created(){
-}
-
+  created(){
+    if(this.ArraySize >=0){
+      for(var i=1; i<=this.ArraySize; i++) {
+      this.dataUser.push({"id": "", "Amount": ""});
+      }
+    }
+  }
 }
 </script>
 

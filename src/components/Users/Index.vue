@@ -3,7 +3,9 @@
     <Add v-on:addUser="addUser" v-on:cancel="removeAddUser" v-bind:AddKey.sync="AddKey" />
     <Edit v-bind:User="Currentuser" v-on:editUser="editUser" v-on:cancel="removeEditUser" v-bind:EditKey.sync="EditKey" />
     <AddMoney v-bind:User="Currentuser" v-on:AddCurrencyUser="AddCurrency" v-bind:AddCurrencyKey.sync="AddCurrencyKey" v-on:cancel="removeAddCurrencyUser" />
-    <Transaction v-on:stamp="stampAll" v-on:cancel="removeStamp" v-bind:selectedUsers="Selected" v-bind:StampKey.sync="StampKey" />
+    <template v-if="arrayCount > 0">
+    <Transaction v-on:stamp="stampAll" v-on:cancel="removeStamp" v-bind:selectedUsers="Selected" v-bind:StampKey.sync="StampKey" v-bind:ArraySize.sync="arrayCount" />
+    </template>
     <md-table v-model="Users" md-card @md-selected="OnSelect">
       <md-table-toolbar>
         <md-button class="button md-raised md-accent cancel" id='toggle' v-on:click='AddStamps' disabled>Stempel</md-button>
@@ -49,7 +51,11 @@ export default {
       AddKey: false,
       AddDialog: false,
       StampKey: false,
-      StampDialog: false
+      StampDialog: false,
+      arrayCount: Number,
+      test: Number,
+
+
     };
   },
   methods: {
@@ -144,7 +150,7 @@ export default {
     },
     stampAll(stamping){
 
-    console.log(stamping)
+    console.log("index: " + stamping)
   },
     ...mapActions(["RequestToken"])
   },
@@ -157,7 +163,8 @@ export default {
     ...mapState({
       token: state => state.token.token,
       loginuser: state => state.loginuser
-    })
+    }),
+    
   },
   async created() {
     const response = await axios
@@ -168,7 +175,10 @@ export default {
         return resp;
       });
     this.Users = response.data;
-  }
+    this.arrayCount = response.data.length;
+    console.log("within parent: " + this.arrayCount)
+
+  },
 };
 </script>
 
