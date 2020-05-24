@@ -2,11 +2,13 @@
     <md-dialog :md-active.sync="TransactionDialog">
       <md-dialog-title><b>Stempelen</b></md-dialog-title>
       <form class="form">
-        <md-field  v-for="(user,index) in selectedUsers" :key='user.id'>
-          <label>{{user.Name}}</label>
-          <md-input type="number" v-model="dataUser[index].Amount" value="0"></md-input>
-          <md-input type="hidden" v-model="dataUser[index].id" /> 
-      </md-field>
+        <div v-for="(user,index) in selectedUsers" :key='user.id'>
+          <md-field>
+            <label>{{user.Name}}</label>
+            <md-input type="number" v-model="dataUser[index].Amount"></md-input>
+          </md-field>
+              <input  class="none" type="hidden" v-model="dataUser[index].id" /> 
+        </div>
     </form>
       <md-button class="button md-raised md-primary" v-on:click="Stamp">stempel</md-button>
       <md-button class="button md-raised md-accent cancel" v-on:click="Cancel">annuleer</md-button>
@@ -38,7 +40,6 @@ watch:{
 },
 methods:{
   Stamp(){
-    console.log(this.dataUser)
     this.$emit("Stamp",this.dataUser)
   },
   Cancel(){
@@ -46,9 +47,9 @@ methods:{
   },
 },
   created(){
-    if(this.ArraySize >=0){
-      for(var i=1; i<=this.ArraySize; i++) {
-      this.dataUser.push({"id": "", "Amount": ""});
+    if(this.selectedUsers.length > 0){
+      for(var i=0; i < this.selectedUsers.length; i++) {
+      this.dataUser.push({"id": this.selectedUsers[i].id, "Amount": ""});
       }
     }
   }
@@ -66,5 +67,8 @@ methods:{
   display: flex;
   align-items: center;
   justify-content: center;
+}
+.none{
+
 }
 </style>

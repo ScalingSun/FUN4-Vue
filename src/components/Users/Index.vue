@@ -3,8 +3,8 @@
     <Add v-on:addUser="addUser" v-on:cancel="removeAddUser" v-bind:AddKey.sync="AddKey" />
     <Edit v-bind:User="Currentuser" v-on:editUser="editUser" v-on:cancel="removeEditUser" v-bind:EditKey.sync="EditKey" />
     <AddMoney v-bind:User="Currentuser" v-on:AddCurrencyUser="AddCurrency" v-bind:AddCurrencyKey.sync="AddCurrencyKey" v-on:cancel="removeAddCurrencyUser" />
-    <template v-if="arrayCount > 0">
-    <Transaction v-on:stamp="stampAll" v-on:cancel="removeStamp" v-bind:selectedUsers="Selected" v-bind:StampKey.sync="StampKey" v-bind:ArraySize.sync="arrayCount" />
+    <template v-if="StampKey">
+    <Transaction v-on:Stamp="stampAll" v-on:cancel="removeStamp" v-bind:selectedUsers="Selected" v-bind:StampKey.sync="StampKey" v-bind:ArraySize.sync="arrayCount" />
     </template>
     <md-table v-model="Users" md-card @md-selected="OnSelect">
       <md-table-toolbar>
@@ -17,7 +17,7 @@
         <md-table-cell md-label="Geld toevoegen" md-sort-by="title"><md-button class="md-raised md-primary" v-on:click="enableAddCurrencyPerUser(item)">Geld toevoegen</md-button></md-table-cell>
         <md-table-cell md-label="wijzigen"><md-button class="md-raised md-primary" v-on:click="enableEditUser(item)">Edit</md-button></md-table-cell>
         <md-table-cell md-label="verwijderen"><md-button class="md-raised md-primary" v-on:click="deleteUser(item.id)">Delete</md-button></md-table-cell>
-      </md-table-row>
+      </md-table-row> 
     </md-table>
     <md-button class="md-fab md-primary addbutton" v-on:click="AddPrompt">
       <md-icon>+</md-icon>
@@ -139,8 +139,8 @@ export default {
         obj.$emit("rerender");
         })
     },
-  OnSelect(items){
-      this.Selected = items;
+  async OnSelect(items){
+    this.Selected = items;
       if(items[0] == null){
         document.getElementById('toggle').disabled = true;
       }
@@ -149,8 +149,7 @@ export default {
       }
     },
     stampAll(stamping){
-
-    console.log("index: " + stamping)
+      axios.post("https://localhost44306/api/Transaction")
   },
     ...mapActions(["RequestToken"])
   },
@@ -176,7 +175,6 @@ export default {
       });
     this.Users = response.data;
     this.arrayCount = response.data.length;
-    console.log("within parent: " + this.arrayCount)
 
   },
 };
