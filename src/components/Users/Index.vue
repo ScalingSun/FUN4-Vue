@@ -149,7 +149,9 @@ export default {
       }
     },
     stampAll(stamping){
-      axios.post("https://localhost44306/api/Transaction")
+        console.log("nibbe")
+        console.log(stamping)
+      /*axios.post("https://localhost44306/api/Transaction")*/
   },
     ...mapActions(["RequestToken"])
   },
