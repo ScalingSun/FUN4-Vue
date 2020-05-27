@@ -13,7 +13,7 @@
         <md-table-row slot="md-table-row" slot-scope="{ item }" md-selectable="multiple" md-auto-select>
         <md-table-cell md-label="Naam" md-sort-by="name">{{ item.Name }}</md-table-cell>
         <md-table-cell md-label="Email" md-sort-by="email">{{ item.EmailAddress }}</md-table-cell>
-        <md-table-cell md-label="geld over">{{ item.Wealth }}</md-table-cell>
+        <md-table-cell md-label="geld over"  v-bind:class="{ red: item.Wealth <= 0 }">€ {{ item.Wealth.toFixed(2) }}</md-table-cell>
         <md-table-cell md-label="Geld toevoegen" md-sort-by="title"><md-button class="md-raised md-primary" v-on:click="enableAddCurrencyPerUser(item)">Geld toevoegen</md-button></md-table-cell>
         <md-table-cell md-label="wijzigen"><md-button class="md-raised md-primary" v-on:click="enableEditUser(item)">Edit</md-button></md-table-cell>
         <md-table-cell md-label="verwijderen"><md-button class="md-raised md-primary" v-on:click="deleteUser(item.id)">Delete</md-button></md-table-cell>
@@ -148,10 +148,24 @@ export default {
         document.getElementById('toggle').disabled = false;
       }
     },
-    stampAll(stamping){
-        console.log("nibbe")
-        console.log(stamping)
-      /*axios.post("https://localhost44306/api/Transaction")*/
+    stampAll(stamping){ 
+      let obj = this; // I hate this.
+      for (var i=0; i<stamping.length; i++){
+      stamping[i].Amount = parseInt(stamping[i].Amount, 10)
+      }
+      var test = JSON.stringify(stamping);
+      JSON.stringify(test)
+      console.log(test)
+      axios
+        .post(
+          "https://localhost:44306/api/transaction/multiple",
+            stamping 
+          ,
+          { headers: { Authorization: `Bearer ${this.token}` }} 
+        ).then(function(){
+          console.log('hits')
+        obj.$emit("rerender");
+        })
   },
     ...mapActions(["RequestToken"])
   },
@@ -193,5 +207,8 @@ export default {
   float: right;
   margin-right: 2.5%;
   margin-top: 1%;
+}
+.red{
+  color:red;
 }
 </style>

@@ -7,7 +7,7 @@
             <label>{{user.Name}}</label>
             <md-input type="number" v-model="dataUser[index].Amount"></md-input>
           </md-field>
-              <input  class="none" type="hidden" v-model="dataUser[index].id" /> 
+              <input  class="none" type="hidden" v-model="dataUser[index].Id" /> 
         </div>
     </form>
       <md-button class="button md-raised md-primary" v-on:click="Stamp">stempel</md-button>
@@ -49,7 +49,7 @@ methods:{
   created(){
     if(this.selectedUsers.length > 0){
       for(var i=0; i < this.selectedUsers.length; i++) {
-      this.dataUser.push({"id": this.selectedUsers[i].id, "Amount": ""});
+      this.dataUser.push({"Id": this.selectedUsers[i].id, "Amount": ""});
       }
     }
   }
