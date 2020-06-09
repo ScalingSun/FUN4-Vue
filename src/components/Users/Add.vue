@@ -14,7 +14,7 @@
         <label>Emailadres</label>
         <md-input v-model="Emailaddress" id="Emailaddress"></md-input>
       </md-field>
-      <md-button class="button md-raised md-primary" v-on:click="Add">creër</md-button>
+      <md-button class="button md-raised md-primary" id="create" v-on:click="Add">creër</md-button>
       <md-button class="button md-raised md-accent cancel" v-on:click="Cancel">annuleer</md-button>
     </form>
   </md-dialog>

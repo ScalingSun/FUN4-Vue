@@ -6,21 +6,21 @@
     <template v-if="StampKey">
     <Transaction v-on:Stamp="stampAll" v-on:cancel="removeStamp" v-bind:selectedUsers="Selected" v-bind:StampKey.sync="StampKey" v-bind:ArraySize.sync="arrayCount" />
     </template>
-    <md-table v-model="Users" md-card @md-selected="OnSelect">
+    <md-table id="table" v-model="Users" md-card @md-selected="OnSelect">
       <md-table-toolbar>
         <md-button class="button md-raised md-accent cancel" id='toggle' v-on:click='AddStamps' disabled>Stempel</md-button>
         </md-table-toolbar>
-        <md-table-row slot="md-table-row" slot-scope="{ item }" md-selectable="multiple" md-auto-select>
+        <md-table-row slot="md-table-row" id="selector" slot-scope="{ item }" md-selectable="multiple" md-auto-select>
         <md-table-cell md-label="Naam" md-sort-by="name">{{ item.Name }}</md-table-cell>
         <md-table-cell md-label="Email" md-sort-by="email">{{ item.EmailAddress }}</md-table-cell>
         <md-table-cell md-label="geld over"  v-bind:class="{ red: item.Wealth <= 0 }">€ {{ item.Wealth.toFixed(2) }}</md-table-cell>
-        <md-table-cell md-label="Geld toevoegen" md-sort-by="title"><md-button class="md-raised md-primary" v-on:click="enableAddCurrencyPerUser(item)">Geld toevoegen</md-button></md-table-cell>
-        <md-table-cell md-label="wijzigen"><md-button class="md-raised md-primary" v-on:click="enableEditUser(item)">Edit</md-button></md-table-cell>
-        <md-table-cell md-label="verwijderen"><md-button class="md-raised md-primary" v-on:click="deleteUser(item.id)">Delete</md-button></md-table-cell>
+        <md-table-cell md-label="Geld toevoegen" md-sort-by="title"><md-button class="md-raised md-primary addMoney" v-on:click="enableAddCurrencyPerUser(item)">Geld toevoegen</md-button></md-table-cell>
+        <md-table-cell md-label="wijzigen"><md-button class="md-raised md-primary edit" v-on:click="enableEditUser(item)">Edit</md-button></md-table-cell>
+        <md-table-cell md-label="verwijderen"><md-button class="md-raised md-primary delete" v-bind:id="item.id" v-on:click="deleteUser(item.id)">Delete</md-button></md-table-cell>
       </md-table-row> 
     </md-table>
-    <md-button class="md-fab md-primary addbutton" v-on:click="AddPrompt">
-      <md-icon>+</md-icon>
+    <md-button  class="md-fab md-primary addbutton" v-on:click="AddPrompt">
+      <md-icon id="adduser">+</md-icon>
     </md-button>
   </div>
 </template>

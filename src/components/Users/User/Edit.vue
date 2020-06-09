@@ -14,7 +14,7 @@
                 <label>Gebruikersnaam</label>
                     <md-input v-model="Name" type="text" id="Name"></md-input>
                 </md-field>
-                <md-button class="button md-raised md-primary" v-on:click="Edit">Update</md-button>
+                <md-button class="button md-raised md-primary update" v-on:click="Edit">Update</md-button>
                 <md-button class="button md-raised md-accent cancel" v-on:click="Cancel">Cancel</md-button>
             </form>
     </md-dialog>

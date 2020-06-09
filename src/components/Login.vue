@@ -6,14 +6,14 @@
 
             <md-field>
             <label>Emailadres:</label>
-                <md-input v-model="Emailaddress"></md-input>
+                <md-input id="email" data-testid="email" v-model="Emailaddress"></md-input>
             </md-field><br/>
 
             <md-field>
             <label> Wachtwoord:</label>
-                <md-input v-model="Password" type="password"></md-input>
+                <md-input id="password" v-model="Password" data-testid="password" type="password"></md-input>
             </md-field>            
-            <md-button class="button md-raised md-primary" v-on:click="Login">Login</md-button>
+            <md-button class="button md-raised md-primary" id="loginbutton" v-on:click="Login">Login</md-button>
             </div>
         </form>
         <template v-if="LoginState">

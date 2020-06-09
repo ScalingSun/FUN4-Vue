@@ -6,7 +6,7 @@
         <label>Bedrag</label>
         <md-input v-model="Amount" type="number" step="0.75" min="7.50" max="75" id="Amount"></md-input>
       </md-field>
-      <md-button class="button md-raised md-primary" v-on:click="AddCurrency">betalen</md-button>
+      <md-button class="button md-raised md-primary" id="submit" v-on:click="AddCurrency">betalen</md-button>
       <md-button class="button md-raised md-accent cancel" v-on:click="Cancel">annuleer</md-button>
     </form>
   </md-dialog>
