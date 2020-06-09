@@ -18,7 +18,7 @@
         <md-table-cell md-label="wijzigen"><md-button class="md-raised md-primary edit" v-on:click="enableEditUser(item)">Edit</md-button></md-table-cell>
         <md-table-cell md-label="verwijderen"><md-button class="md-raised md-primary delete" v-bind:id="item.id" v-on:click="deleteUser(item.id)">Delete</md-button></md-table-cell>
       </md-table-row> 
-    </md-table>
+    </md-table> 
     <md-button  class="md-fab md-primary addbutton" v-on:click="AddPrompt">
       <md-icon id="adduser">+</md-icon>
     </md-button>

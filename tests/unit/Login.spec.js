@@ -16,7 +16,7 @@ describe('Login.vue', () => {
 
   it('renders a vue instance', () => {
     expect(wrapper.isVueInstance()).toBe(true);
-  });
+  }); 
   
 })
 
